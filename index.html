@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080B12" />
+    <meta name="description" content="A fast, private calculator that runs entirely in your browser." />
+    <title>Calculator — Clear, fast, private</title>
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Calculator home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <rect x="4.5" y="3.5" width="23" height="25" rx="6" stroke="currentColor" stroke-width="1.7" />
+              <path d="M10 10h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              <circle cx="11" cy="16" r="1.25" fill="currentColor" />
+              <circle cx="16" cy="16" r="1.25" fill="currentColor" />
+              <circle cx="21" cy="16" r="1.25" fill="currentColor" />
+              <circle cx="11" cy="21" r="1.25" fill="currentColor" />
+              <circle cx="16" cy="21" r="1.25" fill="currentColor" />
+              <path d="M21 20v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+          </span>
+          <span>CALCULATOR</span>
+        </a>
+
+        <nav class="mode-tabs" id="mode-nav" role="tablist" aria-label="Calculator mode">
+          <button class="mode-tab is-active" type="button" role="tab" aria-selected="true" data-mode="basic">Basic</button>
+          <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="scientific">Scientific</button>
+          <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="graph">Graph</button>
+          <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="converter">Converter</button>
+          <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="tools">Tools</button>
+        </nav>
+
+        <div class="header-actions">
+          <button class="icon-button theme-trigger" id="theme-trigger" type="button" aria-label="Theme: System" aria-haspopup="true" aria-expanded="false" title="Choose theme">
+            <svg class="theme-icon" viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="10" cy="10" r="3.6" />
+              <path d="M10 1.8v1.5M10 16.7v1.5M18.2 10h-1.5M3.3 10H1.8m14-5.8-1.1 1.1M5.3 14.7l-1.1 1.1m11.6 0-1.1-1.1M5.3 5.3 4.2 4.2" />
+            </svg>
+          </button>
+          <div class="theme-menu" id="theme-menu" role="menu" aria-label="Theme" hidden>
+            <span class="theme-menu-label">Appearance</span>
+            <button type="button" role="menuitemradio" aria-checked="true" data-theme-choice="system">System</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-theme-choice="light">Light</button>
+            <button type="button" role="menuitemradio" aria-checked="false" data-theme-choice="dark">Dark</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="calculator-card" id="calculator-view" aria-label="Calculator">
+          <div class="display-panel">
+            <div class="display-heading">
+              <div class="expression-wrap">
+                <span class="eyebrow">Expression</span>
+                <div class="expression-display is-placeholder" id="expression-display" dir="auto" aria-label="Current expression">Type a calculation</div>
+              </div>
+              <button class="copy-button" id="copy-button" type="button" aria-label="Copy result" title="Copy result">
+                <svg viewBox="0 0 20 20" aria-hidden="true">
+                  <rect x="7" y="6" width="9" height="11" rx="2" />
+                  <path d="M12 6V4.7A1.7 1.7 0 0 0 10.3 3H5.7A1.7 1.7 0 0 0 4 4.7v7.6A1.7 1.7 0 0 0 5.7 14H7" />
+                </svg>
+              </button>
+            </div>
+            <div class="answer-line">
+              <span class="memory-indicator" id="memory-indicator" hidden aria-label="Memory contains a value">M</span>
+              <output class="result-display" id="result-display" aria-live="polite" aria-atomic="true">0</output>
+            </div>
+            <div class="display-status-row">
+              <span class="display-note" id="display-note">Calculations stay on this device</span>
+              <span class="ans-status" id="ans-status" hidden></span>
+              <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+              <span class="error-message" id="error-message" role="status" aria-live="polite" hidden></span>
+            </div>
+          </div>
+
+          <section class="function-lab" id="function-lab" aria-label="Function Lab" hidden>
+            <div class="lab-heading">
+              <div>
+                <p class="eyebrow">Explore a function</p>
+                <h2>Function Lab</h2>
+              </div>
+              <div class="lab-angle-controls" role="group" aria-label="Function Lab angle unit">
+                <button class="angle-button is-active" id="lab-deg" type="button" aria-pressed="true">DEG</button>
+                <button class="angle-button" id="lab-rad" type="button" aria-pressed="false">RAD</button>
+              </div>
+            </div>
+            <div class="lab-fields">
+              <label>Function
+                <select id="lab-function" class="tool-select">
+                  <option value="sin">sin</option><option value="cos">cos</option><option value="tan">tan</option>
+                  <option value="asin">sin⁻¹</option><option value="acos">cos⁻¹</option><option value="atan">tan⁻¹</option>
+                  <option value="sinh">sinh</option><option value="cosh">cosh</option><option value="tanh">tanh</option>
+                  <option value="ln">ln</option><option value="log">log</option><option value="log2">log₂</option>
+                  <option value="sqrt">√x</option><option value="cbrt">∛x</option><option value="abs">|x|</option>
+                </select>
+              </label>
+              <label>Input
+                <input class="tool-input mono-input" id="lab-input" type="text" value="0" autocomplete="off" spellcheck="false" aria-label="Function input value" />
+              </label>
+              <div class="lab-result-wrap">
+                <span>Result</span>
+                <output id="lab-result" aria-live="polite">0</output>
+              </div>
+            </div>
+            <div class="lab-presets-wrap">
+              <div class="lab-preset-heading" id="lab-preset-heading">Quick values · degrees</div>
+              <div class="lab-presets" id="lab-presets" role="group" aria-label="Quick function values"></div>
+            </div>
+            <p class="inline-error" id="lab-error" role="status" aria-live="polite" hidden></p>
+          </section>
+
+          <div class="calculator-controls">
+            <div class="memory-controls" role="group" aria-label="Memory controls">
+              <button type="button" data-memory="mc" aria-label="Memory clear">MC</button>
+              <button type="button" data-memory="mr" aria-label="Memory recall">MR</button>
+              <button type="button" data-memory="mplus" aria-label="Memory add">M+</button>
+              <button type="button" data-memory="mminus" aria-label="Memory subtract">M−</button>
+              <button type="button" data-memory="ms" aria-label="Memory store">MS</button>
+            </div>
+            <div class="angle-controls" id="angle-controls" role="group" aria-label="Angle unit" hidden>
+              <button class="angle-button is-active" id="angle-deg" type="button" aria-pressed="true">DEG</button>
+              <button class="angle-button" id="angle-rad" type="button" aria-pressed="false">RAD</button>
+            </div>
+          </div>
+
+          <div class="utility-keys" role="group" aria-label="Expression controls">
+            <button class="utility-key" type="button" data-key="(" aria-label="Open parenthesis">(</button>
+            <button class="utility-key" type="button" data-key=")" aria-label="Close parenthesis">)</button>
+            <button class="utility-key ans-key" type="button" data-key="Ans" aria-label="Insert previous answer">Ans</button>
+            <button class="utility-key" type="button" data-action="backspace" aria-label="Backspace" title="Backspace">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.2 4.2H16v11.6H7.2L2.5 10l4.7-5.8Z" /><path d="m9.2 7.5 4.2 5m0-5-4.2 5" /></svg>
+            </button>
+          </div>
+
+          <div class="scientific-functions" id="scientific-functions" role="group" aria-label="Scientific functions" hidden>
+            <button class="function-key second-key" type="button" data-scientific="second" aria-pressed="false">2nd</button>
+            <button class="function-key" type="button" data-scientific="sin">sin</button>
+            <button class="function-key" type="button" data-scientific="cos">cos</button>
+            <button class="function-key" type="button" data-scientific="tan">tan</button>
+            <button class="function-key" type="button" data-scientific="sinh">sinh</button>
+            <button class="function-key" type="button" data-scientific="cosh">cosh</button>
+            <button class="function-key" type="button" data-scientific="tanh">tanh</button>
+
+            <button class="function-key" type="button" data-scientific="ln">ln</button>
+            <button class="function-key" type="button" data-scientific="log">log</button>
+            <button class="function-key" type="button" data-scientific="log2">log₂</button>
+            <button class="function-key" type="button" data-scientific="sqrt">√x</button>
+            <button class="function-key" type="button" data-scientific="cbrt">∛x</button>
+            <button class="function-key" type="button" data-scientific="square">x²</button>
+            <button class="function-key" type="button" data-scientific="cube">x³</button>
+
+            <button class="function-key" type="button" data-scientific="power">xʸ</button>
+            <button class="function-key" type="button" data-scientific="root">ⁿ√</button>
+            <button class="function-key" type="button" data-scientific="reciprocal">1/x</button>
+            <button class="function-key" type="button" data-scientific="factorial">n!</button>
+            <button class="function-key" type="button" data-scientific="abs">|x|</button>
+            <button class="function-key" type="button" data-scientific="floor">floor</button>
+            <button class="function-key" type="button" data-scientific="ceil">ceil</button>
+
+            <button class="function-key" type="button" data-scientific="mod">mod</button>
+            <button class="function-key" type="button" data-scientific="pi">π</button>
+            <button class="function-key" type="button" data-scientific="e">e</button>
+            <button class="function-key" type="button" data-scientific="exp">eˣ</button>
+            <button class="function-key" type="button" data-scientific="pow10">10ˣ</button>
+            <button class="function-key" type="button" data-scientific="ans">Ans</button>
+            <button class="function-key" type="button" data-scientific="percent">%</button>
+          </div>
+
+          <div class="basic-keypad" id="basic-keypad" role="group" aria-label="Calculator keypad">
+            <button class="key key-clear" type="button" data-action="clear">AC</button>
+            <button class="key key-utility" type="button" data-action="sign" aria-label="Change sign">±</button>
+            <button class="key key-utility" type="button" data-key="%" aria-label="Percent">%</button>
+            <button class="key key-operator" type="button" data-key="÷" aria-label="Divide">÷</button>
+
+            <button class="key key-number" type="button" data-key="7">7</button>
+            <button class="key key-number" type="button" data-key="8">8</button>
+            <button class="key key-number" type="button" data-key="9">9</button>
+            <button class="key key-operator" type="button" data-key="×" aria-label="Multiply">×</button>
+
+            <button class="key key-number" type="button" data-key="4">4</button>
+            <button class="key key-number" type="button" data-key="5">5</button>
+            <button class="key key-number" type="button" data-key="6">6</button>
+            <button class="key key-operator" type="button" data-key="−" aria-label="Subtract">−</button>
+
+            <button class="key key-number" type="button" data-key="1">1</button>
+            <button class="key key-number" type="button" data-key="2">2</button>
+            <button class="key key-number" type="button" data-key="3">3</button>
+            <button class="key key-operator" type="button" data-key="+" aria-label="Add">+</button>
+
+            <button class="key key-number key-zero" type="button" data-key="0">0</button>
+            <button class="key key-number" type="button" data-key=".">.</button>
+            <button class="key key-equals" type="button" data-action="equals" aria-label="Calculate">=</button>
+          </div>
+
+
+
+          <footer class="calculator-footer">
+            <span>No account</span><span class="footer-dot" aria-hidden="true">·</span><span>No saved history</span><span class="footer-dot" aria-hidden="true">·</span><span>Works offline after first visit</span>
+          </footer>
+        </section>
+
+        <section class="graph-view" id="graph-view" aria-label="Graphing calculator" hidden>
+          <div class="graph-header">
+            <div>
+              <p class="eyebrow">Functions · radians</p>
+              <h1>Graph</h1>
+              <p class="graph-subtitle">Plots update as you type. Use <code>x</code> as the input variable.</p>
+            </div>
+            <button class="graph-add-button" id="add-equation" type="button"><span aria-hidden="true">+</span> Add equation</button>
+          </div>
+          <div class="graph-equations" id="graph-equations" role="group" aria-label="Graph equations">
+            <div class="graph-equation-row" data-graph-row="0">
+              <input class="graph-enabled" type="checkbox" checked aria-label="Show equation one" />
+              <span class="curve-swatch" style="--curve-color:#19D3FF" aria-hidden="true"></span>
+              <label class="graph-prefix" for="graph-equation-0">f₁(x) =</label>
+              <input class="graph-equation-input mono-input" id="graph-equation-0" type="text" value="x^2 - 4x + 3" list="math-function-suggestions" autocomplete="off" spellcheck="false" aria-label="First graph equation" />
+              <button class="remove-equation" type="button" data-remove-equation aria-label="Remove equation" title="Remove equation">×</button>
+            </div>
+          </div>
+          <div class="graph-canvas-shell" id="graph-canvas-shell">
+            <canvas id="graph-canvas" tabindex="0" role="img" aria-label="Interactive graph of the listed equations"></canvas>
+            <div class="graph-tooltip" id="graph-tooltip" hidden></div>
+            <div class="graph-empty-state" id="graph-empty-state" hidden>Enter a valid function of x to plot it.</div>
+          </div>
+          <div class="graph-toolbar">
+            <div class="zoom-controls" role="group" aria-label="Graph zoom">
+              <button type="button" id="graph-zoom-out" aria-label="Zoom out">−</button>
+              <span id="graph-zoom-label">100%</span>
+              <button type="button" id="graph-zoom-in" aria-label="Zoom in">+</button>
+            </div>
+            <button class="reset-view-button" type="button" id="graph-reset">Reset view</button>
+            <span class="graph-coordinate" id="graph-coordinate" aria-live="polite">Move over a curve for coordinates</span>
+            <span class="graph-help">Scroll to zoom · drag to pan · R to reset</span>
+          </div>
+          <p class="inline-error graph-error" id="graph-error" role="status" aria-live="polite" hidden></p>
+        </section>
+
+        <section class="tool-card converter-view" id="converter-view" aria-label="Unit converter" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Convert units</p>
+              <h1>Converter</h1>
+            </div>
+            <p class="section-note">Instant conversions, all in your browser.</p>
+          </div>
+          <div class="category-list" id="conversion-categories" role="tablist" aria-label="Conversion category">
+            <button class="category-chip is-active" type="button" role="tab" aria-selected="true" data-category="length">Length</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="area">Area</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="volume">Volume</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="mass">Mass</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="temperature">Temperature</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="time">Time</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="speed">Speed</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="data">Data</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="energy">Energy</button>
+            <button class="category-chip" type="button" role="tab" aria-selected="false" data-category="pressure">Pressure</button>
+          </div>
+          <div class="converter-grid">
+            <div class="conversion-field">
+              <label for="convert-input">From</label>
+              <div class="conversion-input-row">
+                <input id="convert-input" type="number" inputmode="decimal" step="any" value="1" aria-label="Value to convert" />
+                <select id="convert-from" aria-label="Convert from unit"></select>
+              </div>
+            </div>
+            <button class="swap-button" id="swap-units" type="button" aria-label="Swap conversion units" title="Swap units">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 6h11m0 0-3-3m3 3-3 3M16 14H5m0 0 3 3m-3-3 3-3" /></svg>
+            </button>
+            <div class="conversion-field">
+              <label for="convert-output">To</label>
+              <div class="conversion-input-row output-row">
+                <output id="convert-output" class="conversion-output" aria-live="polite">0.001</output>
+                <select id="convert-to" aria-label="Convert to unit"></select>
+                <button class="copy-conversion" id="copy-conversion" type="button" aria-label="Copy converted value" title="Copy converted value">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="6" width="9" height="11" rx="2" /><path d="M12 6V4.7A1.7 1.7 0 0 0 10.3 3H5.7A1.7 1.7 0 0 0 4 4.7v7.6A1.7 1.7 0 0 0 5.7 14H7" /></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="converter-bottom-row">
+            <div class="converter-footnote" id="converter-footnote" aria-live="polite">1 mm = 0.001 m</div>
+            <span class="copy-status" id="converter-copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </section>
+
+        <section class="tools-view" id="tools-view" aria-label="Calculation tools" hidden>
+          <div class="tool-switcher" id="tool-nav" role="tablist" aria-label="Calculation tool">
+            <button type="button" role="tab" aria-selected="true" class="tool-tab is-active" data-tool="percent">Percentage</button>
+            <button type="button" role="tab" aria-selected="false" class="tool-tab" data-tool="statistics">Statistics</button>
+            <button type="button" role="tab" aria-selected="false" class="tool-tab" data-tool="programmer">Programmer</button>
+            <button type="button" role="tab" aria-selected="false" class="tool-tab" data-tool="equation">Equation solver</button>
+            <button type="button" role="tab" aria-selected="false" class="tool-tab" data-tool="finance">Finance</button>
+          </div>
+
+          <section class="tool-page" id="tool-percent" role="tabpanel" aria-label="Percentage tools">
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">Quick calculations</p><h1>Percentage</h1></div>
+              <p class="section-note">Three common percentage calculations.</p>
+            </div>
+            <div class="tool-grid three-columns">
+              <article class="tool-card">
+                <p class="tool-kicker">Find a percentage</p>
+                <h2>Percent of a value</h2>
+                <label class="field-label" for="pct-rate">Percent</label>
+                <div class="input-with-suffix"><input id="pct-rate" type="number" inputmode="decimal" value="25" step="any" /><span>%</span></div>
+                <label class="field-label" for="pct-base">Of</label>
+                <input id="pct-base" class="tool-input" type="number" inputmode="decimal" value="400" step="any" />
+                <div class="tool-answer"><span>Result</span><output id="pct-of-result">100</output></div>
+              </article>
+              <article class="tool-card">
+                <p class="tool-kicker">Adjust a value</p>
+                <h2>Increase or decrease</h2>
+                <label class="field-label" for="pct-adjust-base">Starting value</label>
+                <input id="pct-adjust-base" class="tool-input" type="number" inputmode="decimal" value="100" step="any" />
+                <div class="inline-fields">
+                  <div><label class="field-label" for="pct-adjust-rate">Percent</label><div class="input-with-suffix"><input id="pct-adjust-rate" type="number" inputmode="decimal" value="20" step="any" /><span>%</span></div></div>
+                  <div><label class="field-label" for="pct-direction">Action</label><select id="pct-direction" class="tool-select"><option value="increase">Increase</option><option value="decrease">Decrease</option></select></div>
+                </div>
+                <div class="tool-answer"><span>Result</span><output id="pct-adjust-result">120</output></div>
+              </article>
+              <article class="tool-card">
+                <p class="tool-kicker">Compare values</p>
+                <h2>Percentage change</h2>
+                <label class="field-label" for="pct-old">Original value</label>
+                <input id="pct-old" class="tool-input" type="number" inputmode="decimal" value="100" step="any" />
+                <label class="field-label" for="pct-new">New value</label>
+                <input id="pct-new" class="tool-input" type="number" inputmode="decimal" value="125" step="any" />
+                <div class="tool-answer"><span>Change</span><output id="pct-change-result">25% increase</output></div>
+              </article>
+            </div>
+          </section>
+
+          <section class="tool-page" id="tool-statistics" role="tabpanel" aria-label="Statistics" hidden>
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">Describe a data set</p><h1>Statistics</h1></div>
+              <div class="segmented-control" role="group" aria-label="Variance type">
+                <button type="button" class="is-active" data-stat-mode="population" aria-pressed="true">Population</button>
+                <button type="button" data-stat-mode="sample" aria-pressed="false">Sample</button>
+              </div>
+            </div>
+            <div class="statistics-layout">
+              <article class="tool-card data-entry-card">
+                <label class="field-label" for="statistics-input">Values</label>
+                <textarea id="statistics-input" rows="8" spellcheck="false" placeholder="Enter numbers separated by spaces, commas, or new lines">12
+15
+18
+20
+25</textarea>
+                <p class="field-help">Paste or type a list. Commas, spaces, and new lines are accepted.</p>
+                <p class="inline-error" id="statistics-error" role="status" aria-live="polite" hidden></p>
+              </article>
+              <div class="stat-grid" aria-live="polite">
+                <div class="stat-tile"><span>Count</span><output id="stat-count">5</output></div>
+                <div class="stat-tile"><span>Sum</span><output id="stat-sum">90</output></div>
+                <div class="stat-tile"><span>Mean</span><output id="stat-mean">18</output></div>
+                <div class="stat-tile"><span>Median</span><output id="stat-median">18</output></div>
+                <div class="stat-tile"><span>Mode</span><output id="stat-mode">No mode</output></div>
+                <div class="stat-tile"><span>Minimum</span><output id="stat-min">12</output></div>
+                <div class="stat-tile"><span>Maximum</span><output id="stat-max">25</output></div>
+                <div class="stat-tile"><span>Range</span><output id="stat-range">13</output></div>
+                <div class="stat-tile"><span>Variance</span><output id="stat-variance">20</output></div>
+                <div class="stat-tile"><span>Std. deviation</span><output id="stat-deviation">4.47</output></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="tool-page" id="tool-programmer" role="tabpanel" aria-label="Programmer calculator" hidden>
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">Base conversion & bitwise</p><h1>Programmer</h1></div>
+              <p class="section-note">32-bit bitwise operations.</p>
+            </div>
+            <article class="tool-card programmer-card">
+              <div class="programmer-inputs">
+                <div><label class="field-label" for="programmer-base">Input base</label><select class="tool-select" id="programmer-base"><option value="10">Decimal</option><option value="16">Hexadecimal</option><option value="8">Octal</option><option value="2">Binary</option></select></div>
+                <div><label class="field-label" for="programmer-a">Value A</label><input class="tool-input mono-input" id="programmer-a" type="text" value="25" autocomplete="off" spellcheck="false" /></div>
+                <div><label class="field-label" for="programmer-b">Value B</label><input class="tool-input mono-input" id="programmer-b" type="text" value="3" autocomplete="off" spellcheck="false" /></div>
+              </div>
+              <div class="base-conversions">
+                <div><span>A · BIN</span><output id="prog-a-bin">11001</output></div>
+                <div><span>A · OCT</span><output id="prog-a-oct">31</output></div>
+                <div><span>A · DEC</span><output id="prog-a-dec">25</output></div>
+                <div><span>A · HEX</span><output id="prog-a-hex">19</output></div>
+              </div>
+              <div class="base-conversions">
+                <div><span>B · BIN</span><output id="prog-b-bin">11</output></div>
+                <div><span>B · OCT</span><output id="prog-b-oct">3</output></div>
+                <div><span>B · DEC</span><output id="prog-b-dec">3</output></div>
+                <div><span>B · HEX</span><output id="prog-b-hex">3</output></div>
+              </div>
+              <div class="bitwise-label">Bitwise operation</div>
+              <div class="bitwise-operations" id="bitwise-operations" role="group" aria-label="Bitwise operation">
+                <button type="button" data-bitop="and">AND</button><button type="button" data-bitop="or">OR</button><button type="button" data-bitop="xor">XOR</button><button type="button" data-bitop="not">NOT A</button><button type="button" data-bitop="nand">NAND</button><button type="button" data-bitop="nor">NOR</button><button type="button" data-bitop="shl">A &lt;&lt; B</button><button type="button" data-bitop="shr">A &gt;&gt; B</button>
+              </div>
+              <div class="programmer-result">
+                <div class="programmer-result-heading"><span>Result</span><output id="programmer-result">Choose an operation</output></div>
+                <div class="base-conversions result-conversions">
+                  <div><span>BIN</span><output id="prog-result-bin">—</output></div><div><span>OCT</span><output id="prog-result-oct">—</output></div><div><span>DEC</span><output id="prog-result-dec">—</output></div><div><span>HEX</span><output id="prog-result-hex">—</output></div>
+                </div>
+              </div>
+              <p class="field-help">Inputs use the selected base. Bitwise results follow JavaScript’s signed 32-bit integer rules.</p>
+              <p class="inline-error" id="programmer-error" role="status" aria-live="polite" hidden></p>
+            </article>
+          </section>
+
+          <section class="tool-page" id="tool-equation" role="tabpanel" aria-label="Equation solver" hidden>
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">Linear & quadratic</p><h1>Equation solver</h1></div>
+              <p class="section-note">Enter an equation in x, such as 2x + 5 = 17.</p>
+            </div>
+            <article class="tool-card equation-card">
+              <label class="field-label" for="equation-input">Equation</label>
+              <div class="equation-input-row"><input class="tool-input mono-input" id="equation-input" type="text" value="2x + 5 = 17" list="math-function-suggestions" autocomplete="off" spellcheck="false" /><button class="primary-button" id="solve-equation" type="button">Solve</button></div>
+              <div class="equation-actions"><button class="secondary-button" id="plot-equation" type="button">Plot</button><button class="secondary-button" id="solve-plot-equation" type="button">Solve &amp; plot</button></div>
+              <div class="equation-result" id="equation-result" aria-live="polite" aria-atomic="true">Enter a linear or quadratic equation to get started.</div>
+              <p class="field-help">Supports expressions up to degree 2, parentheses, and standard arithmetic. No expression is sent anywhere.</p>
+            </article>
+          </section>
+
+          <section class="tool-page" id="tool-finance" role="tabpanel" aria-label="Finance calculator" hidden>
+            <div class="section-heading compact-heading">
+              <div><p class="eyebrow">Interest & payments</p><h1>Finance</h1></div>
+              <p class="section-note">A quick estimate using the values you enter.</p>
+            </div>
+            <div class="finance-layout">
+              <article class="tool-card finance-input-card">
+                <div class="finance-field-grid">
+                  <div><label class="field-label" for="finance-principal">Principal</label><input class="tool-input" id="finance-principal" type="number" inputmode="decimal" min="0" value="10000" step="any" /></div>
+                  <div><label class="field-label" for="finance-rate">Annual rate</label><div class="input-with-suffix"><input id="finance-rate" type="number" inputmode="decimal" min="0" value="5" step="any" /><span>%</span></div></div>
+                  <div><label class="field-label" for="finance-years">Term in years</label><input class="tool-input" id="finance-years" type="number" inputmode="decimal" min="0" value="5" step="any" /></div>
+                  <div><label class="field-label" for="finance-frequency">Compounds per year</label><select class="tool-select" id="finance-frequency"><option value="1">Annually</option><option value="2">Semi-annually</option><option value="4">Quarterly</option><option value="12" selected>Monthly</option><option value="365">Daily</option></select></div>
+                </div>
+                <p class="field-help">Estimates assume a fixed annual rate and regular compounding. Loan payment is an amortized monthly estimate.</p>
+              </article>
+              <div class="finance-results">
+                <div class="finance-result-tile"><span>Simple interest total</span><output id="finance-simple">—</output></div>
+                <div class="finance-result-tile"><span>Compound total</span><output id="finance-compound">—</output></div>
+                <div class="finance-result-tile"><span>Compound interest</span><output id="finance-interest">—</output></div>
+                <div class="finance-result-tile is-highlight"><span>Estimated monthly payment</span><output id="finance-payment">—</output></div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <datalist id="math-function-suggestions">
+        <option value="sin("></option><option value="sinh("></option><option value="sin⁻¹("></option><option value="asin("></option>
+        <option value="cos("></option><option value="cosh("></option><option value="cos⁻¹("></option><option value="acos("></option>
+        <option value="tan("></option><option value="tanh("></option><option value="tan⁻¹("></option><option value="atan("></option>
+        <option value="sqrt("></option><option value="cbrt("></option><option value="log("></option><option value="ln("></option>
+      </datalist>
+      <div class="sr-only" id="app-announcer" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </body>
+</html>
