@@ -16,10 +16,17 @@ test('caches the native engine module and reloads offline after installation', a
   expect(cachedAssets.some(path => path.endsWith('/src/features/statistics.js'))).toBe(true);
   expect(cachedAssets.some(path => path.endsWith('/src/features/finance.js'))).toBe(true);
 
+  const pageErrors = [];
+  const failedRequests = [];
+  page.on('pageerror', error => pageErrors.push(error.message));
+  page.on('requestfailed', request => failedRequests.push({ url: request.url(), error: request.failure()?.errorText }));
+
   await context.setOffline(true);
   await page.reload();
   await expect(page.locator('#result-display')).toHaveText('0');
-  await expect.poll(() => page.evaluate(() => typeof window.calculate)).toBe('function');
+  await expect.poll(() => page.evaluate(() => typeof window.calculate), {
+    message: () => JSON.stringify({ pageErrors, failedRequests })
+  }).toBe('function');
   expect(await page.evaluate(() => window.calculate('6*7'))).toBe(42);
   await context.setOffline(false);
 });
