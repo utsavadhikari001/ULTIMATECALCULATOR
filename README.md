@@ -73,6 +73,8 @@ index.html              Application markup
 style.css               Theme tokens, layout and component styling
 app.js                  Application state, feature logic and UI events
 src/core/calculator-engine.js  Tokenizer, parser, evaluator and number formatting
+src/features/statistics.js    Pure descriptive-statistics calculations
+src/features/finance.js       Pure finance calculations
 manifest.json           PWA manifest
 service-worker.js       Offline app-shell caching
 icon.svg                App icon
@@ -84,6 +86,8 @@ tests/
   e2e/features.spec.js  Tool, keyboard and responsive regressions
   e2e/pwa.spec.js       Offline app-shell regression tests
   unit/calculator-engine.test.js  Pure engine unit tests
+  unit/statistics.test.js  Statistics edge cases
+  unit/finance.test.js     Finance calculation edge cases
 playwright.config.js    Browser-test configuration
 docs/
   audit-baseline.md     Source audit and baseline risks
