@@ -26,7 +26,7 @@ test('calculates descriptive statistics for population data', () => {
 
 test('calculates sample variance and multiple modes', () => {
   const result = calculateStatistics([1, 1, 2, 2, 3], 'sample');
-  assert.equal(result.variance, 0.7);
+  assert.ok(Math.abs(result.variance - 0.7) < 1e-12);
   assert.deepEqual(result.modes, [1, 2]);
 });
 
