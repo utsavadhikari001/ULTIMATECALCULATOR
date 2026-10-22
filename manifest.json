@@ -1,12 +1,12 @@
 {
-  "name": "Clear Calculator",
-  "short_name": "Calculator",
+  "name": "Ultimate Calculator",
+  "short_name": "UltimateCalc",
   "description": "A fast, private calculator that runs entirely in your browser.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#080B12",
-  "theme_color": "#080B12",
+  "background_color": "#12171D",
+  "theme_color": "#12171D",
   "icons": [
     {
       "src": "./icon.svg",

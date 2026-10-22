@@ -1,264 +1,118 @@
-# 🧮 Ultimate Calculator
+# Ultimate Calculator
 
-A modern, responsive, and feature-rich calculator built from scratch using **HTML, CSS, and JavaScript**.
+A privacy-first, browser-based calculator built with vanilla HTML, CSS and JavaScript. It brings everyday arithmetic and a set of scientific and developer-oriented tools into one responsive interface.
 
-Ultimate Calculator combines everyday calculations with scientific functions, graphing, unit conversion, statistics, programmer tools, equation solving, percentage calculations, and more — all in one browser-based application.
+All calculations run locally in the browser. The app does not require a backend, account or calculation API.
 
-> 🚀 A personal project built to strengthen my **JavaScript, frontend development, UI/UX, mathematical logic, and problem-solving skills**.
+## Features
 
----
+- **Basic calculator:** arithmetic, parentheses, operator precedence, percentages, previous answer, memory controls and keyboard input.
+- **Scientific calculator:** trigonometric and hyperbolic functions, inverse functions, logarithms, roots, powers, factorials, constants and degree/radian mode.
+- **Graphing:** plot multiple functions, zoom and pan, inspect coordinates and visualize equation roots.
+- **Function Lab:** explore supported functions with preset inputs and degree/radian controls.
+- **Unit converter:** length, area, volume, mass, temperature, time, speed, data, energy and pressure.
+- **Statistics:** descriptive statistics with population and sample variance modes.
+- **Programmer tools:** binary, octal, decimal and hexadecimal conversion plus 32-bit bitwise operations.
+- **Equation solver:** linear and quadratic equation solving with graphing support.
+- **Percentage and finance tools:** percentage-of, percentage change, increase/decrease, simple interest, compound interest and payment estimates.
+- **Themes:** light, dark and system appearance.
+- **Progressive Web App:** installable app shell with service-worker caching for supported browsers.
 
-## ✨ Features
+The calculator currently has **session-only memory controls, not a persistent calculation-history feature**.
 
-### ➕ Basic Calculator
+## Technology and privacy
 
-* Addition, subtraction, multiplication, and division
-* Parentheses and operator precedence
-* Percentage calculations
-* Positive/negative toggle
-* Backspace and clear
-* `Ans` support
-* Copy results
-* Keyboard input
+- HTML5, CSS and vanilla JavaScript
+- No runtime dependencies
+- No backend or database
+- No login requirement
+- No calculation API
+- Static deployment; Vercel configuration is included
+- Expression parsing is implemented in JavaScript without `eval()`
 
-### 🔬 Scientific Calculator
+## Run locally
 
-* Trigonometric functions
-* Inverse trigonometric functions
-* Hyperbolic functions
-* Powers and roots
-* Factorials
-* Modulo
-* Mathematical constants
-* Degree / Radian modes
-* Scientific expression parsing
+Requirements: Node.js 22 or compatible current LTS.
 
-### 📈 Graphing Calculator
-
-* Plot mathematical functions directly in the browser
-* Multiple curves
-* Zoom and pan
-* Reset graph view
-* Hover coordinates
-* Equation root markers
-* Live graph updates
-
-### 🧪 Function Lab
-
-Experiment with mathematical functions using built-in presets and test different functions using degree and radian modes.
-
-### 🔄 Unit Converter
-
-Convert between multiple categories, including:
-
-* Length
-* Area
-* Volume
-* Mass
-* Temperature
-* Time
-* Speed
-* Data
-* Energy
-* Pressure
-
-### 📊 Statistics
-
-Tools for performing:
-
-* Population statistics
-* Sample statistics
-* Descriptive statistical calculations
-
-### 💻 Programmer Tools
-
-Number-system and bitwise utilities including:
-
-* Binary
-* Decimal
-* Hexadecimal
-* Base conversion
-* 32-bit bitwise operations
-
-### 📐 Equation Solver
-
-Solve and visualize:
-
-* Linear equations
-* Quadratic equations
-* Equation graphs
-
-### 💰 Percentage & Interest
-
-Includes tools for:
-
-* Percentage calculations
-* Simple interest
-* Compound interest estimates
-
-### 🧠 Calculator Memory
-
-Session-based memory functions:
-
-* `MC` — Memory Clear
-* `MR` — Memory Recall
-* `M+` — Memory Add
-* `M−` — Memory Subtract
-* `MS` — Memory Store
-
----
-
-## 🎨 User Experience
-
-Designed to be responsive and comfortable across different screen sizes.
-
-* 🌙 Dark Mode
-* ☀️ Light Mode
-* 🖥️ System Theme
-* 📱 Responsive design
-* ⌨️ Keyboard support
-* 📋 Copy-to-clipboard
-* ♿ Accessibility support
-* 🎞️ Reduced-motion support
-
----
-
-## ⚡ Progressive Web App
-
-Ultimate Calculator includes **Progressive Web App (PWA)** support through a service worker.
-
-Static application assets can be cached after the first visit, allowing the application shell to remain available even when offline.
-
-All calculations are performed locally in the browser.
-
----
-
-## 🔐 Privacy & Architecture
-
-Ultimate Calculator is a **client-side application**.
-
-There is:
-
-* ❌ No backend
-* ❌ No calculation API
-* ❌ No login system
-* ❌ No database
-* ❌ No analytics
-* ❌ No cloud calculation processing
-
-Calculations are performed directly inside the user's browser.
-
-The expression engine tokenizes, parses, and evaluates mathematical expressions without relying on JavaScript's `eval()` function.
-
----
-
-## 🛠️ Technologies
-
-| Technology         | Purpose                             |
-| ------------------ | ----------------------------------- |
-| **HTML5**          | Application structure               |
-| **CSS3**           | Styling, layout & responsive design |
-| **JavaScript**     | Calculator logic and functionality  |
-| **Service Worker** | Offline asset caching               |
-| **PWA**            | Installable web application         |
-| **Vercel**         | Deployment                          |
-
----
-
-## 📁 Project Structure
-
-```text
-ULTIMATECALCULATOR/
-│
-├── index.html
-├── style.css
-├── app.js
-├── manifest.json
-├── service-worker.js
-├── icon.svg
-├── vercel.json
-├── package.json
-└── README.md
+```bash
+npm install
+npm start
 ```
 
----
+Open the local URL printed by the server (default: http://127.0.0.1:4173).
 
-## 🚀 Run Locally
-
-No backend or database is required.
-
-### Option 1 — Open Directly
-
-Open:
-
-```text
-index.html
-```
-
-in your browser.
-
-### Option 2 — Run a Local Server
-
-Using Python:
+You can also serve the project with another static HTTP server, for example:
 
 ```bash
 python3 -m http.server 4173
 ```
 
-Then open:
+Then visit http://localhost:4173. A local server is recommended for service-worker testing; direct `file://` access does not provide the same browser behavior.
 
-```text
-http://localhost:4173
+## Tests
+
+Install the Playwright browser once:
+
+```bash
+npx playwright install chromium
 ```
 
+Run checks:
+
+```bash
+npm run lint
+npm test
+```
+
+The Playwright smoke suite covers startup, arithmetic precedence, theme switching, unit conversion, statistics and graph-mode visibility. These are the initial regression gates, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
+
+## Project structure
+
+```text
+index.html              Application markup
+style.css               Theme tokens, layout and component styling
+app.js                  Calculator engine, state, features and UI events
+manifest.json           PWA manifest
+service-worker.js       Offline app-shell caching
+icon.svg                App icon
+vercel.json             Static deployment configuration
+tests/
+  static-server.mjs     Local server used by browser tests
+  e2e/smoke.spec.js     Playwright regression smoke tests
+playwright.config.js    Browser-test configuration
+docs/
+  audit-baseline.md     Source audit and baseline risks
+  architecture.md       Incremental target architecture
+CONTRIBUTING.md         Local development and contribution checks
+```
+
+The existing application is intentionally kept intact while tests are added. The architecture guide describes an incremental migration path; it is not a claim that the application has already been split into modules.
+
+## Roadmap
+
+1. Establish reliable baseline tests and record existing behavior.
+2. Centralize and test the expression engine before extracting modules.
+3. Consolidate the light/dark/system design tokens and responsive components.
+4. Improve accessibility, keyboard workflows, error handling and mobile layout.
+5. Review PWA cache/update behavior and expand regression coverage.
+6. Consider additional local-first workflows only after core behavior is protected.
+
+## Engineering documentation
+
+- [Repository audit and baseline risks](docs/audit-baseline.md)
+- [Architecture direction](docs/architecture.md)
+- [Design system specification](docs/design-system.md)
+- [Upgrade roadmap and release gates](docs/upgrade-roadmap.md)
+- [Contribution workflow](CONTRIBUTING.md)
+
+## Deployment
+
+Deploy the repository as a static site on Vercel or another static hosting provider. No server-side runtime is required for calculation features. After changing asset paths, test the deployed URL and service-worker behavior.
+
+## Author
+
+Created and maintained as a personal frontend and JavaScript project by [Utsav Adhikari](https://github.com/utsavadhikari001).
+
 ---
 
-## ☁️ Deployment
-
-The project can be deployed as a static website using platforms such as Vercel.
-
-Clone or fork the repository, import it into your deployment platform, and deploy.
-
-No backend server is required for the application.
-
----
-
-## 🎯 Project Purpose
-
-Ultimate Calculator was created as a hands-on project to explore how much functionality can be packed into a browser-based calculator while keeping it lightweight, responsive, and entirely client-side.
-
-The project also provided practical experience with:
-
-* JavaScript application architecture
-* Mathematical expression parsing
-* Frontend UI/UX
-* Responsive web design
-* Graphing and visualization
-* Mathematical calculations
-* PWA functionality
-* Browser APIs
-* Problem solving
-
----
-
-## 📌 Project Status
-
-**Public • Personal Project**
-
-Built and maintained as a personal development project and experimentation platform.
-
----
-
-## 👨‍💻 Author
-
-**Utsav Adhikari**
-
-GitHub: [@utsavadhikari001](https://github.com/utsavadhikari001)
-
----
-
-## ⭐ Support
-
-If you find the project useful or interesting, consider giving the repository a ⭐ on GitHub.
-
-**Built with HTML, CSS & JavaScript.**
+Built with HTML, CSS and JavaScript.

@@ -876,7 +876,7 @@ function updateFunctionLab(syncMain = true) {
 function setTheme(theme) {
   state.theme = theme;
   document.documentElement.dataset.theme = theme;
-  const themeColor = theme === 'light' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches) ? '#f4f6f7' : '#080B12';
+  const themeColor = theme === 'light' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: light)').matches) ? '#F4F6F8' : '#12171D';
   $('meta[name="theme-color"]').content = themeColor;
   $('#theme-trigger').setAttribute('aria-label', `Theme: ${theme[0].toUpperCase()}${theme.slice(1)}`);
   $$('[data-theme-choice]').forEach(button => {

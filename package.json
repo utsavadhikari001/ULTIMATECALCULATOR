@@ -1,7 +1,17 @@
 {
-  "name": "clear-calculator",
-  "version": "1.0.0",
+  "name": "ultimate-calculator",
+  "version": "1.1.0",
   "private": true,
-  "description": "A static, browser-only calculator built with HTML, CSS, and JavaScript.",
-  "license": "UNLICENSED"
+  "description": "A privacy-first, browser-based calculator built with vanilla HTML, CSS, and JavaScript.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node tests/static-server.mjs",
+    "lint": "node --check app.js && node --check tests/static-server.mjs && node --check playwright.config.js && node --check tests/e2e/smoke.spec.js",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0"
+  }
 }
