@@ -28,7 +28,7 @@ npx playwright install chromium
 npm test
 ```
 
-The Playwright suite starts its own static server. Tests run with service workers blocked so stale caches do not hide the latest source during ordinary UI checks. PWA lifecycle behavior should be tested separately.
+The Playwright suite starts its own static server. Ordinary UI tests block service workers so stale caches do not hide the latest source; `tests/e2e/pwa.spec.js` explicitly enables the service worker and checks the cached engine module plus an offline reload.
 
 ## Pull requests
 
