@@ -1,9 +1,13 @@
-const CACHE_NAME = 'ultimate-calculator-v3';
+const CACHE_NAME = 'ultimate-calculator-v9';
 const APP_SHELL = [
   './',
   './index.html',
   './style.css',
   './app.js',
+  './src/core/calculator-engine.js',
+  './src/features/statistics.js',
+  './src/features/finance.js',
+  './src/features/programmer.js',
   './manifest.json',
   './icon.svg'
 ];
@@ -30,12 +34,12 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      caches.match('./index.html').then(cached => cached || fetch(request))
+      caches.match('./index.html', { ignoreSearch: true }).then(cached => cached || fetch(request))
     );
     return;
   }
 
   event.respondWith(
-    caches.match(request).then(cached => cached || fetch(request))
+    caches.match(request, { ignoreSearch: true }).then(cached => cached || fetch(request))
   );
 });

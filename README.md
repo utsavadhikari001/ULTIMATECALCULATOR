@@ -64,21 +64,32 @@ npm run lint
 npm test
 ```
 
-The Playwright smoke suite covers startup, arithmetic precedence, theme switching, unit conversion, statistics and graph-mode visibility. These are the initial regression gates, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
+The Playwright suites cover startup, arithmetic precedence, theme switching, unit conversion, statistics, graph-mode visibility, expression precedence, implicit multiplication, percentages, factorials, degree/radian functions, common calculation errors, programmer bitwise operations, equation solving, finance outputs, converter swapping, graph controls, keyboard input, offline reload and a narrow mobile viewport. These are regression gates for the covered cases, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
 
 ## Project structure
 
 ```text
 index.html              Application markup
 style.css               Theme tokens, layout and component styling
-app.js                  Calculator engine, state, features and UI events
+app.js                  Application state, feature logic and UI events
+src/core/calculator-engine.js  Tokenizer, parser, evaluator and number formatting
+src/features/statistics.js    Pure descriptive-statistics calculations
+src/features/finance.js       Pure finance calculations
+src/features/programmer.js    Base parsing and 32-bit bitwise operations
 manifest.json           PWA manifest
 service-worker.js       Offline app-shell caching
 icon.svg                App icon
 vercel.json             Static deployment configuration
 tests/
   static-server.mjs     Local server used by browser tests
-  e2e/smoke.spec.js     Playwright regression smoke tests
+  e2e/smoke.spec.js     Playwright application smoke tests
+  e2e/expression-engine.spec.js  Calculation grammar and error regressions
+  e2e/features.spec.js  Tool, keyboard and responsive regressions
+  e2e/pwa.spec.js       Offline app-shell regression tests
+  unit/calculator-engine.test.js  Pure engine unit tests
+  unit/statistics.test.js  Statistics edge cases
+  unit/finance.test.js     Finance calculation edge cases
+  unit/programmer.test.js  Programmer base and bitwise edge cases
 playwright.config.js    Browser-test configuration
 docs/
   audit-baseline.md     Source audit and baseline risks
@@ -86,16 +97,15 @@ docs/
 CONTRIBUTING.md         Local development and contribution checks
 ```
 
-The existing application is intentionally kept intact while tests are added. The architecture guide describes an incremental migration path; it is not a claim that the application has already been split into modules.
+The first low-risk architecture step is complete: the expression engine is a native ES module, while the remaining UI and feature orchestration stays in `app.js` for a gradual follow-up migration. The PWA test verifies that the extracted engine is cached for offline use.
 
 ## Roadmap
 
-1. Establish reliable baseline tests and record existing behavior.
-2. Centralize and test the expression engine before extracting modules.
-3. Consolidate the light/dark/system design tokens and responsive components.
-4. Improve accessibility, keyboard workflows, error handling and mobile layout.
-5. Review PWA cache/update behavior and expand regression coverage.
-6. Consider additional local-first workflows only after core behavior is protected.
+1. Expand calculation-engine and feature regression coverage.
+2. Extract remaining feature logic behind tested boundaries without changing expression semantics.
+3. Refine responsive and accessible UI states across themes and viewport sizes.
+4. Verify PWA installation, offline reload and cache updates.
+5. Complete release review and document any remaining limitations.
 
 ## Engineering documentation
 
@@ -104,6 +114,7 @@ The existing application is intentionally kept intact while tests are added. The
 - [Design system specification](docs/design-system.md)
 - [Upgrade roadmap and release gates](docs/upgrade-roadmap.md)
 - [Contribution workflow](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 
 ## Deployment
 

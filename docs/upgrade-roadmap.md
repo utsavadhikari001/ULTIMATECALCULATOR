@@ -8,6 +8,17 @@
 - Keep the production app as vanilla HTML/CSS/JavaScript on static hosting.
 - New features do not outrank correctness, accessibility, offline reliability or preservation of existing features.
 
+## Current implementation status
+
+- [x] Audit, contribution guide, roadmap and baseline CI
+- [x] Initial browser smoke tests and expanded feature regression coverage
+- [x] Semantic light/dark/system theme tokens
+- [x] Extracted tokenizer/parser/evaluator/number formatting into `src/core/calculator-engine.js`
+- [x] Added Node unit tests for the extracted calculation engine
+- [ ] Complete the combined CI run and resolve any regressions before merging
+- [ ] Expand PWA offline/update, accessibility and cross-viewport checks
+- [ ] Finish UI and feature hardening, then perform release review
+
 ## Milestones
 
 | Milestone | Estimated effort | Deliverables | Exit criteria |
