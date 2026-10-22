@@ -64,7 +64,7 @@ npm run lint
 npm test
 ```
 
-The Playwright smoke suite covers startup, arithmetic precedence, theme switching, unit conversion, statistics and graph-mode visibility. These are the initial regression gates, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
+The Playwright suites cover startup, arithmetic precedence, theme switching, unit conversion, statistics, graph-mode visibility, expression precedence, implicit multiplication, percentages, factorials, degree/radian functions and common calculation errors. These are regression gates for the covered cases, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
 
 ## Project structure
 
