@@ -1,10 +1,11 @@
-const CACHE_NAME = 'ultimate-calculator-v5';
+const CACHE_NAME = 'ultimate-calculator-v6';
 const APP_SHELL = [
   './',
   './index.html',
   './style.css',
   './app.js',
   './src/core/calculator-engine.js',
+  './src/features/statistics.js',
   './manifest.json',
   './icon.svg'
 ];
