@@ -71,7 +71,8 @@ The Playwright suites cover startup, arithmetic precedence, theme switching, uni
 ```text
 index.html              Application markup
 style.css               Theme tokens, layout and component styling
-app.js                  Calculator engine, state, features and UI events
+app.js                  Application state, feature logic and UI events
+src/core/calculator-engine.js  Tokenizer, parser, evaluator and number formatting
 manifest.json           PWA manifest
 service-worker.js       Offline app-shell caching
 icon.svg                App icon
@@ -81,6 +82,7 @@ tests/
   e2e/smoke.spec.js     Playwright application smoke tests
   e2e/expression-engine.spec.js  Calculation grammar and error regressions
   e2e/features.spec.js  Tool, keyboard and responsive regressions
+  unit/calculator-engine.test.js  Pure engine unit tests
 playwright.config.js    Browser-test configuration
 docs/
   audit-baseline.md     Source audit and baseline risks
