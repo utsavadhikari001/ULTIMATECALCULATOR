@@ -9,10 +9,11 @@ test('caches the native engine module and reloads offline after installation', a
   await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
 
   const cachedAssets = await page.evaluate(async () => {
-    const cache = await caches.open('ultimate-calculator-v5');
+    const cache = await caches.open('ultimate-calculator-v6');
     return (await cache.keys()).map(request => new URL(request.url).pathname);
   });
   expect(cachedAssets.some(path => path.endsWith('/src/core/calculator-engine.js'))).toBe(true);
+  expect(cachedAssets.some(path => path.endsWith('/src/features/statistics.js'))).toBe(true);
 
   await context.setOffline(true);
   await page.reload();
