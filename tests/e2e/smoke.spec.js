@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('loads the application shell and initial calculator state', async ({ page }) => {
-  await expect(page).toHaveTitle(/UltimateCalculator/);
+  await expect(page).toHaveTitle(/Ultimate Calculator/);
   await expect(page.locator('#calculator-view')).toBeVisible();
   await expect(page.locator('#result-display')).toHaveText('0');
   await expect(page.locator('#mode-nav')).toBeVisible();
