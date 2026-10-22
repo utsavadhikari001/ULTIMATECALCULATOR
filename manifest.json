@@ -1,6 +1,6 @@
 {
-  "name": "Clear Calculator",
-  "short_name": "Calculator",
+  "name": "Ultimate Calculator",
+  "short_name": "UltimateCalc",
   "description": "A fast, private calculator that runs entirely in your browser.",
   "start_url": "./",
   "scope": "./",
