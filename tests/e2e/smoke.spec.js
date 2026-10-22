@@ -26,10 +26,12 @@ test('switches between light and dark themes', async ({ page }) => {
   await page.locator('#theme-trigger').click();
   await page.locator('[data-theme-choice="light"]').click();
   await expect(root).toHaveAttribute('data-theme', 'light');
+  await expect.poll(() => root.evaluate(el => getComputedStyle(el).getPropertyValue('--accent').trim())).toBe('#087F73');
 
   await page.locator('#theme-trigger').click();
   await page.locator('[data-theme-choice="dark"]').click();
   await expect(root).toHaveAttribute('data-theme', 'dark');
+  await expect.poll(() => root.evaluate(el => getComputedStyle(el).getPropertyValue('--accent').trim())).toBe('#35C5B0');
 });
 
 test('converts length units', async ({ page }) => {
@@ -56,4 +58,13 @@ test('opens graphing mode and exposes its equation editor', async ({ page }) => 
   await expect(page.locator('#graph-view')).toBeVisible();
   await expect(page.locator('#graph-equation-0')).toBeVisible();
   await expect(page.locator('#graph-canvas')).toBeVisible();
+});
+
+test('system theme follows the browser color preference', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.locator('#theme-trigger').click();
+  await page.locator('[data-theme-choice="system"]').click();
+
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'system');
+  await expect.poll(() => page.locator('html').evaluate(el => getComputedStyle(el).getPropertyValue('--accent').trim())).toBe('#087F73');
 });
