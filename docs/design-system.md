@@ -6,7 +6,7 @@ Make UltimateCalculator feel like a deliberate, dependable desktop tool: calm hi
 
 ## Semantic color tokens
 
-These are the proposed target tokens. Apply them in a dedicated design pass after the baseline tests are stable; do not replace colors opportunistically during unrelated bug fixes.
+These semantic tokens are now applied in the root CSS variables, including the system-theme light variant. Keep future color changes centralized here and verify contrast rather than scattering color literals through component rules.
 
 | Token | Light theme | Dark theme | Use |
 | --- | --- | --- | --- |
