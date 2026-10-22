@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "node tests/static-server.mjs",
-    "lint": "node --check app.js && node --check tests/static-server.mjs && node --check playwright.config.js && node --check tests/e2e/smoke.spec.js && node --check tests/e2e/expression-engine.spec.js",
+    "lint": "node --check app.js && node --check tests/static-server.mjs && node --check playwright.config.js && node --check tests/e2e/smoke.spec.js && node --check tests/e2e/expression-engine.spec.js && node --check tests/e2e/features.spec.js",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:report": "playwright show-report"
