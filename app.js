@@ -8,6 +8,7 @@ import {
   parseExpression as parseExpressionCore
 } from './src/core/calculator-engine.js';
 import { calculateStatistics, parseStatisticsInput } from './src/features/statistics.js';
+import { calculateFinance } from './src/features/finance.js';
 
 /*
  * Clear Calculator
@@ -1400,27 +1401,20 @@ function updateFinance() {
     const field = $(selector);
     return field.value === '' ? NaN : Number(field.value);
   };
-  const principal = read('#finance-principal');
-  const rate = read('#finance-rate') / 100;
-  const years = read('#finance-years');
-  const frequency = Number($('#finance-frequency').value);
-  const valid = Number.isFinite(principal) && principal >= 0 && Number.isFinite(rate) && rate >= 0 && Number.isFinite(years) && years >= 0 && frequency > 0;
-  if (!valid) {
+  const result = calculateFinance({
+    principal: read('#finance-principal'),
+    annualRate: read('#finance-rate'),
+    years: read('#finance-years'),
+    frequency: Number($('#finance-frequency').value)
+  });
+  if (!result.valid) {
     ['#finance-simple', '#finance-compound', '#finance-interest', '#finance-payment'].forEach(selector => { $(selector).textContent = '—'; });
     return;
   }
-  const simpleTotal = principal * (1 + rate * years);
-  const compoundTotal = principal * Math.pow(1 + rate / frequency, frequency * years);
-  const interest = compoundTotal - principal;
-  const months = years * 12;
-  const monthlyRate = rate / 12;
-  const payment = months > 0
-    ? (monthlyRate === 0 ? principal / months : principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1))
-    : NaN;
-  $('#finance-simple').textContent = formatFinance(simpleTotal);
-  $('#finance-compound').textContent = formatFinance(compoundTotal);
-  $('#finance-interest').textContent = formatFinance(interest);
-  $('#finance-payment').textContent = Number.isFinite(payment) ? formatFinance(payment) : '—';
+  $('#finance-simple').textContent = formatFinance(result.simpleTotal);
+  $('#finance-compound').textContent = formatFinance(result.compoundTotal);
+  $('#finance-interest').textContent = formatFinance(result.interest);
+  $('#finance-payment').textContent = Number.isFinite(result.payment) ? formatFinance(result.payment) : '—';
 }
 
 let copyTimer = 0;
