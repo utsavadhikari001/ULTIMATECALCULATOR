@@ -5,6 +5,7 @@
 - Added repository audit, architecture direction, design-system guidance and release gates.
 - Added Playwright smoke, feature, expression and PWA regression suites plus Node unit tests.
 - Extracted the expression tokenizer, parser, evaluator, numeric guards and formatting into a native ES module at `src/core/calculator-engine.js`.
+- Extracted descriptive statistics and finance calculations into pure feature modules with dedicated Node unit tests.
 - Kept the application on vanilla HTML, CSS and JavaScript with static hosting and no runtime framework.
 - Added defensive response headers to the Vercel static deployment configuration.
 - Refined semantic light/dark/system theme tokens and aligned browser/PWA theme colors.
