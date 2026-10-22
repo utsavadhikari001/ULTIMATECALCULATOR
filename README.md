@@ -97,6 +97,14 @@ The existing application is intentionally kept intact while tests are added. The
 5. Review PWA cache/update behavior and expand regression coverage.
 6. Consider additional local-first workflows only after core behavior is protected.
 
+## Engineering documentation
+
+- [Repository audit and baseline risks](docs/audit-baseline.md)
+- [Architecture direction](docs/architecture.md)
+- [Design system specification](docs/design-system.md)
+- [Upgrade roadmap and release gates](docs/upgrade-roadmap.md)
+- [Contribution workflow](CONTRIBUTING.md)
+
 ## Deployment
 
 Deploy the repository as a static site on Vercel or another static hosting provider. No server-side runtime is required for calculation features. After changing asset paths, test the deployed URL and service-worker behavior.
