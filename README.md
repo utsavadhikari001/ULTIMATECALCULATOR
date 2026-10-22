@@ -64,7 +64,7 @@ npm run lint
 npm test
 ```
 
-The Playwright suites cover startup, arithmetic precedence, theme switching, unit conversion, statistics, graph-mode visibility, expression precedence, implicit multiplication, percentages, factorials, degree/radian functions and common calculation errors. These are regression gates for the covered cases, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
+The Playwright suites cover startup, arithmetic precedence, theme switching, unit conversion, statistics, graph-mode visibility, expression precedence, implicit multiplication, percentages, factorials, degree/radian functions, common calculation errors, programmer bitwise operations, equation solving, finance outputs, converter swapping, graph controls, keyboard input and a narrow mobile viewport. These are regression gates for the covered cases, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
 
 ## Project structure
 
@@ -78,7 +78,9 @@ icon.svg                App icon
 vercel.json             Static deployment configuration
 tests/
   static-server.mjs     Local server used by browser tests
-  e2e/smoke.spec.js     Playwright regression smoke tests
+  e2e/smoke.spec.js     Playwright application smoke tests
+  e2e/expression-engine.spec.js  Calculation grammar and error regressions
+  e2e/features.spec.js  Tool, keyboard and responsive regressions
 playwright.config.js    Browser-test configuration
 docs/
   audit-baseline.md     Source audit and baseline risks
