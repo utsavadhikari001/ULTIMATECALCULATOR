@@ -9,7 +9,7 @@ import {
 } from './src/core/calculator-engine.js';
 import { calculateStatistics, parseStatisticsInput } from './src/features/statistics.js';
 import { calculateFinance } from './src/features/finance.js';
-import { baseString, calculateBitwise, displayInt32, parseBaseInteger } from './src/features/programmer.js';
+import { baseString, calculateBitwise, parseBaseInteger } from './src/features/programmer.js';
 
 /*
  * Clear Calculator
