@@ -64,7 +64,7 @@ npm run lint
 npm test
 ```
 
-The Playwright suites cover startup, arithmetic precedence, theme switching, unit conversion, statistics, graph-mode visibility, expression precedence, implicit multiplication, percentages, factorials, degree/radian functions, common calculation errors, programmer bitwise operations, equation solving, finance outputs, converter swapping, graph controls, keyboard input and a narrow mobile viewport. These are regression gates for the covered cases, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
+The Playwright suites cover startup, arithmetic precedence, theme switching, unit conversion, statistics, graph-mode visibility, expression precedence, implicit multiplication, percentages, factorials, degree/radian functions, common calculation errors, programmer bitwise operations, equation solving, finance outputs, converter swapping, graph controls, keyboard input, offline reload and a narrow mobile viewport. These are regression gates for the covered cases, not exhaustive proof of every mathematical edge case. GitHub Actions runs the same checks on pushes to the upgrade branch and on pull requests to `main`.
 
 ## Project structure
 
@@ -75,6 +75,7 @@ app.js                  Application state, feature logic and UI events
 src/core/calculator-engine.js  Tokenizer, parser, evaluator and number formatting
 src/features/statistics.js    Pure descriptive-statistics calculations
 src/features/finance.js       Pure finance calculations
+src/features/programmer.js    Base parsing and 32-bit bitwise operations
 manifest.json           PWA manifest
 service-worker.js       Offline app-shell caching
 icon.svg                App icon
@@ -88,6 +89,7 @@ tests/
   unit/calculator-engine.test.js  Pure engine unit tests
   unit/statistics.test.js  Statistics edge cases
   unit/finance.test.js     Finance calculation edge cases
+  unit/programmer.test.js  Programmer base and bitwise edge cases
 playwright.config.js    Browser-test configuration
 docs/
   audit-baseline.md     Source audit and baseline risks
