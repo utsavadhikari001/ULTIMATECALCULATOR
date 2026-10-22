@@ -60,7 +60,7 @@ test('converter swap preserves the converted quantity', async ({ page }) => {
   await expect(page.locator('#convert-output')).toHaveText('1');
   await page.locator('#swap-units').click();
   await expect(page.locator('#convert-input')).toHaveValue('1');
-  await expect(page.locator('#convert-output')).toHaveText('1000');
+  await expect(page.locator('#convert-output')).toHaveText('1,000');
 });
 
 test('graph zoom and reset controls remain operable', async ({ page }) => {
