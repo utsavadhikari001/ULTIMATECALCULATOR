@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ultimate-calculator-v7';
+const CACHE_NAME = 'ultimate-calculator-v8';
 const APP_SHELL = [
   './',
   './index.html',
@@ -33,12 +33,12 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      caches.match('./index.html').then(cached => cached || fetch(request))
+      caches.match('./index.html', { ignoreSearch: true }).then(cached => cached || fetch(request))
     );
     return;
   }
 
   event.respondWith(
-    caches.match(request).then(cached => cached || fetch(request))
+    caches.match(request, { ignoreSearch: true }).then(cached => cached || fetch(request))
   );
 });
