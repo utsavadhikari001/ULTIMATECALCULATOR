@@ -7,6 +7,7 @@ import {
   numberForExpression,
   parseExpression as parseExpressionCore
 } from './src/core/calculator-engine.js';
+import { calculateStatistics, parseStatisticsInput } from './src/features/statistics.js';
 
 /*
  * Clear Calculator
@@ -705,38 +706,26 @@ function updateStatistics() {
     return;
   }
 
-  const pieces = raw.split(/[\s,;]+/).filter(Boolean);
-  const values = pieces.map(piece => Number(piece));
-  if (values.some(value => !Number.isFinite(value))) {
+  let stats;
+  try {
+    stats = calculateStatistics(parseStatisticsInput(raw), state.statisticsMode);
+  } catch (error) {
     clearStats();
-    errorElement.textContent = 'Use finite numbers separated by spaces, commas, or new lines.';
+    errorElement.textContent = error.message || 'Enter finite numbers.';
     errorElement.hidden = false;
     return;
   }
-  const sorted = [...values].sort((a, b) => a - b);
-  const count = values.length;
-  const sum = values.reduce((total, value) => total + value, 0);
-  const mean = sum / count;
-  const median = count % 2 ? sorted[(count - 1) / 2] : (sorted[count / 2 - 1] + sorted[count / 2]) / 2;
-  const counts = new Map();
-  values.forEach(value => counts.set(value, (counts.get(value) || 0) + 1));
-  const highestFrequency = Math.max(...counts.values());
-  const modes = highestFrequency > 1 ? [...counts.entries()].filter(([, frequency]) => frequency === highestFrequency).map(([value]) => value).sort((a, b) => a - b) : [];
-  const range = sorted[count - 1] - sorted[0];
-  const squaredSum = values.reduce((total, value) => total + (value - mean) ** 2, 0);
-  const divisor = state.statisticsMode === 'sample' ? count - 1 : count;
-  const variance = divisor > 0 ? squaredSum / divisor : NaN;
 
-  $('#stat-count').textContent = formatNumber(count);
-  $('#stat-sum').textContent = formatNumber(sum);
-  $('#stat-mean').textContent = formatNumber(mean);
-  $('#stat-median').textContent = formatNumber(median);
-  $('#stat-mode').textContent = modes.length ? modes.map(formatNumber).join(', ') : 'No mode';
-  $('#stat-min').textContent = formatNumber(sorted[0]);
-  $('#stat-max').textContent = formatNumber(sorted[count - 1]);
-  $('#stat-range').textContent = formatNumber(range);
-  $('#stat-variance').textContent = Number.isFinite(variance) ? formatNumber(variance) : '—';
-  $('#stat-deviation').textContent = Number.isFinite(variance) ? formatNumber(Math.sqrt(variance)) : '—';
+  $('#stat-count').textContent = formatNumber(stats.count);
+  $('#stat-sum').textContent = formatNumber(stats.sum);
+  $('#stat-mean').textContent = formatNumber(stats.mean);
+  $('#stat-median').textContent = formatNumber(stats.median);
+  $('#stat-mode').textContent = stats.modes.length ? stats.modes.map(formatNumber).join(', ') : 'No mode';
+  $('#stat-min').textContent = formatNumber(stats.min);
+  $('#stat-max').textContent = formatNumber(stats.max);
+  $('#stat-range').textContent = formatNumber(stats.range);
+  $('#stat-variance').textContent = Number.isFinite(stats.variance) ? formatNumber(stats.variance) : '—';
+  $('#stat-deviation').textContent = Number.isFinite(stats.variance) ? formatNumber(stats.deviation) : '—';
 }
 
 function parseBaseInteger(raw, base) {
