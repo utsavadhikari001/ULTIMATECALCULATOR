@@ -31,7 +31,7 @@ test('handles percentages, factorials, and modulo', () => {
 test('uses explicit degree/radian settings and degree markers', () => {
   assert.ok(Math.abs(evaluate('sin(30)', { angleMode: 'DEG' }) - 0.5) < 1e-12);
   assert.ok(Math.abs(evaluate('sin(pi/2)', { angleMode: 'RAD' }) - 1) < 1e-12);
-  assert.ok(Math.abs(evaluate('sin(90°') - 1) < 1e-12);
+  assert.ok(Math.abs(evaluate('sin(90°)') - 1) < 1e-12);
 });
 
 test('rejects division by zero and invalid mathematical domains', () => {
