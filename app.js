@@ -9,6 +9,7 @@ import {
 } from './src/core/calculator-engine.js';
 import { calculateStatistics, parseStatisticsInput } from './src/features/statistics.js';
 import { calculateFinance } from './src/features/finance.js';
+import { baseString, calculateBitwise, displayInt32, parseBaseInteger } from './src/features/programmer.js';
 
 /*
  * Clear Calculator
@@ -729,35 +730,6 @@ function updateStatistics() {
   $('#stat-deviation').textContent = Number.isFinite(stats.variance) ? formatNumber(stats.deviation) : '—';
 }
 
-function parseBaseInteger(raw, base) {
-  const text = String(raw).trim().replace(/_/g, '');
-  if (!text) throw new CalculatorError('Enter an integer');
-  const sign = text.startsWith('-') ? -1n : 1n;
-  const unsignedText = text.replace(/^[+-]/, '');
-  if (!unsignedText) throw new CalculatorError('Invalid integer for this base');
-  const prefix = base === 16 ? /^0x/i : base === 8 ? /^0o/i : base === 2 ? /^0b/i : null;
-  const digits = prefix ? unsignedText.replace(prefix, '') : unsignedText;
-  const patterns = { 2: /^[01]+$/, 8: /^[0-7]+$/, 10: /^\d+$/, 16: /^[0-9a-f]+$/i };
-  if (!patterns[base].test(digits)) throw new CalculatorError('Invalid integer for this base');
-  let magnitude;
-  try {
-    if (base === 10) magnitude = BigInt(digits);
-    else if (base === 16) magnitude = BigInt(`0x${digits}`);
-    else if (base === 8) magnitude = BigInt(`0o${digits}`);
-    else magnitude = BigInt(`0b${digits}`);
-  } catch (_) {
-    throw new CalculatorError('Invalid integer for this base');
-  }
-  return sign * magnitude;
-}
-
-function baseString(value, base) {
-  const negative = value < 0n;
-  const magnitude = negative ? -value : value;
-  const result = magnitude.toString(base).toUpperCase();
-  return negative ? `-${result}` : result;
-}
-
 function updateProgrammerConversions() {
   const base = state.programmerBase;
   const aInput = $('#programmer-a');
@@ -793,12 +765,6 @@ function renderProgrammerOperandB(value) {
   $('#prog-b-hex').textContent = baseString(value, 16);
 }
 
-function displayInt32(value, base) {
-  const signed = BigInt(value);
-  if (base === 10) return signed.toString(10);
-  return BigInt.asUintN(32, signed).toString(base).toUpperCase();
-}
-
 function runBitwise(operation) {
   const { a, b } = updateProgrammerConversions();
   const resultOutput = $('#programmer-result');
@@ -810,28 +776,21 @@ function runBitwise(operation) {
     return;
   }
 
-  const a32 = Number(BigInt.asIntN(32, a));
-  const b32 = b === null ? 0 : Number(BigInt.asIntN(32, b));
-  let result;
-  switch (operation) {
-    case 'and': result = a32 & b32; break;
-    case 'or': result = a32 | b32; break;
-    case 'xor': result = a32 ^ b32; break;
-    case 'not': result = ~a32; break;
-    case 'nand': result = ~(a32 & b32); break;
-    case 'nor': result = ~(a32 | b32); break;
-    case 'shl': result = a32 << (b32 & 31); break;
-    case 'shr': result = a32 >> (b32 & 31); break;
-    default: return;
+  try {
+    const result = calculateBitwise(operation, a, b, state.programmerBase);
+    state.lastBitOperation = operation;
+    errorElement.hidden = true;
+    resultOutput.textContent = result.result;
+    $('#prog-result-bin').textContent = result.bin;
+    $('#prog-result-oct').textContent = result.oct;
+    $('#prog-result-dec').textContent = result.dec;
+    $('#prog-result-hex').textContent = result.hex;
+    $$('#bitwise-operations button').forEach(button => button.classList.toggle('is-active', button.dataset.bitop === operation));
+  } catch (error) {
+    errorElement.textContent = error.message || 'Invalid bitwise operation.';
+    errorElement.hidden = false;
+    resultOutput.textContent = '—';
   }
-  state.lastBitOperation = operation;
-  errorElement.hidden = true;
-  resultOutput.textContent = displayInt32(result, state.programmerBase);
-  $('#prog-result-bin').textContent = displayInt32(result, 2);
-  $('#prog-result-oct').textContent = displayInt32(result, 8);
-  $('#prog-result-dec').textContent = displayInt32(result, 10);
-  $('#prog-result-hex').textContent = displayInt32(result, 16);
-  $$('#bitwise-operations button').forEach(button => button.classList.toggle('is-active', button.dataset.bitop === operation));
 }
 
 function updateProgrammer() {
